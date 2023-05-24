@@ -1,12 +1,13 @@
 import { Image } from "../models/responses";
 
-const IP = "http://127.0.0.1:5002/"
-const CAR_RESULT_INFO = IP + "car-dataset-info"
-const TEST_MODEL = IP + "test-car-model"
+const GATEWAY_URL = "http://127.0.0.1:5002/atc/"
 
-const requestFileOptions = (file: any) => ({
+const CAR_RESULT_INFO = GATEWAY_URL + "car-dataset-info"
+const TEST_MODEL = GATEWAY_URL + "test-car-model"
+
+const requestFileOptions = (body: any) => ({
     method: 'POST',
-    body: file
+    body: body
 });
 
 export const fetchCarDatasetInfo = () => {
@@ -16,7 +17,7 @@ export const fetchCarDatasetInfo = () => {
 
 export const fetchCarModelTesting = (image : Image) => {
   const body = new FormData();
-  body.append("file", image.value);
+  body.append("image", image.value);
   return fetch(TEST_MODEL, requestFileOptions(body))
     .then(response => response.json())
 }
