@@ -1,7 +1,7 @@
 
 export type Response = {
-    accuracy: number;
-    class: string;
+    predictions: number;
+    classes: string;
 };
   
 export type Image = {

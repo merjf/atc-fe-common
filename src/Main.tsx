@@ -19,6 +19,10 @@ const useStyles = makeStyles({
   },
   navBar: {
     maxHeight: 70,
+    alignItems: "flex-end",
+    paddingRight: 20,
+    backgroundColor: "white !important",
+    color: "black !important"
   },
   menuBar: {
     [theme?.breakpoints.down('sm')]: {
@@ -31,6 +35,11 @@ const useStyles = makeStyles({
       marginTop: 65,
       boxSizing: 'border-box',
       width: 240
+    }
+  },
+  topicItem: {
+    "& > span":{
+      fontWeight: "bold"
     }
   }
 });
@@ -91,8 +100,8 @@ function App() {
     <div className="App">
       <Header />
       <AppBar position="fixed" className={classes.navBar}>
-          <Toolbar>
-            Application Collector
+          <Toolbar disableGutters>
+            Academic Tools Collector
           </Toolbar>
         </AppBar>
         <Drawer variant="temporary" open={mobileOpen} onClose={handleDrawerToggle} className={classes.menuBar} ModalProps={{ keepMounted: true, }} >
@@ -100,11 +109,11 @@ function App() {
             <List>
               {pages.map((topic, index) => (
                 <Box key={topic.topic}>
-                  <ListItem disablePadding>
-                      <ListItemText primary={topic.topic} />
+                  <ListItem >
+                      <ListItemText className={classes.topicItem} primary={topic.topic} />
                   </ListItem>
                   {topic.pages.map((page, index) => (
-                      <ListItem key={page.index} disablePadding>
+                      <ListItem key={page.index}>
                           <ListItemButton onClick={() => setSelectedPage(page.index)}>
                               <ListItemText primary={page.name} />
                           </ListItemButton> 
@@ -120,11 +129,11 @@ function App() {
             <List>
               {pages.map((topic, index) => (
                 <Box key={topic.topic}>
-                  <ListItem disablePadding>
-                      <ListItemText primary={topic.topic} />
+                  <ListItem>
+                  <ListItemText className={classes.topicItem} primary={topic.topic} />
                   </ListItem>
                   {topic.pages.map((page, index) => (
-                      <ListItem key={page.index} disablePadding>
+                      <ListItem key={page.index}>
                           <ListItemButton onClick={() => setSelectedPage(page.index)}>
                               <ListItemText primary={page.name} />
                           </ListItemButton> 

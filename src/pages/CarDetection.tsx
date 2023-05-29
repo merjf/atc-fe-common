@@ -108,8 +108,8 @@ const CarDetection = () => {
               {result &&
                   <Box className={classes.dataResultBox}>
                     <h3>Data Result:</h3>
-                    <b>Class:</b> {result?.class}
-                    <b>Accuracy:</b> {result?.accuracy}
+                    <b>Class:</b> {result?.classes}
+                    <b>Accuracy:</b> {result?.predictions}
                   </Box>
               }
             </Box>
