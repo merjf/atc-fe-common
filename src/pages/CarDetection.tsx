@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { makeStyles } from "@mui/styles";
-import { Box, Button, Container, Divider } from "@mui/material";
+import { Box, Button, Container, Divider, List, ListItem } from "@mui/material";
 import { fetchCarModelTesting, fetchCarDatasetInfo } from '../services/APIService'
 import { Response, Image } from '../models/responses'
 import CleaningServicesIcon from '@mui/icons-material/CleaningServices';
@@ -108,8 +108,17 @@ const CarDetection = () => {
               {result &&
                   <Box className={classes.dataResultBox}>
                     <h3>Data Result:</h3>
-                    <b>Class:</b> {result?.classes}
-                    <b>Accuracy:</b> {result?.predictions}
+                    {result?.predictions.map((prediction, index) => (
+                      <List>
+                        <ListItem>
+                          <p>
+                            <b>{index}</b>
+                            <b>Class: </b> {prediction.model}
+                            <b>Accuracy: </b> {prediction.accuracy}
+                          </p>
+                        </ListItem>
+                      </List>
+                    ))}
                   </Box>
               }
             </Box>

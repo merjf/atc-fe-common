@@ -1,8 +1,13 @@
 
 export type Response = {
-    predictions: number;
-    classes: string;
+    message: string;
+    predictions: Prediction[];
 };
+
+export type Prediction = {
+    accuracy: number;
+    model: string;
+}
   
 export type Image = {
     src: string,

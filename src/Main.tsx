@@ -13,16 +13,10 @@ const useStyles = makeStyles({
   main: {
     marginTop: 100,
     marginBottom: 100,
+    paddingLeft: "240px !important",
     "& > nav": {
       marginBottom: 50
     }
-  },
-  navBar: {
-    maxHeight: 70,
-    alignItems: "flex-end",
-    paddingRight: 20,
-    backgroundColor: "white !important",
-    color: "black !important"
   },
   menuBar: {
     [theme?.breakpoints.down('sm')]: {
@@ -32,9 +26,9 @@ const useStyles = makeStyles({
       display: "none"
     },
     '& .MuiDrawer-paper': {
-      marginTop: 65,
+      paddingTop: 65,
       boxSizing: 'border-box',
-      width: 240
+      width: 240,
     }
   },
   topicItem: {
@@ -99,55 +93,50 @@ function App() {
   return (
     <div className="App">
       <Header />
-      <AppBar position="fixed" className={classes.navBar}>
-          <Toolbar disableGutters>
-            Academic Tools Collector
-          </Toolbar>
-        </AppBar>
-        <Drawer variant="temporary" open={mobileOpen} onClose={handleDrawerToggle} className={classes.menuBar} ModalProps={{ keepMounted: true, }} >
-          <Box>
-            <List>
-              {pages.map((topic, index) => (
-                <Box key={topic.topic}>
-                  <ListItem >
-                      <ListItemText className={classes.topicItem} primary={topic.topic} />
-                  </ListItem>
-                  {topic.pages.map((page, index) => (
-                      <ListItem key={page.index}>
-                          <ListItemButton onClick={() => setSelectedPage(page.index)}>
-                              <ListItemText primary={page.name} />
-                          </ListItemButton> 
-                      </ListItem>
-                  ))}
-              </Box>
-              ))}
-            </List>
-          </Box>
-        </Drawer>
-        <Drawer variant="permanent" className={classes.menuBar} open>
-          <Box>
-            <List>
-              {pages.map((topic, index) => (
-                <Box key={topic.topic}>
-                  <ListItem>
-                  <ListItemText className={classes.topicItem} primary={topic.topic} />
-                  </ListItem>
-                  {topic.pages.map((page, index) => (
-                      <ListItem key={page.index}>
-                          <ListItemButton onClick={() => setSelectedPage(page.index)}>
-                              <ListItemText primary={page.name} />
-                          </ListItemButton> 
-                      </ListItem>
-                  ))}
-              </Box>
-              ))}
-            </List>
-          </Box>
-        </Drawer>
+      <Drawer variant="temporary" open={mobileOpen} onClose={handleDrawerToggle} className={classes.menuBar} ModalProps={{ keepMounted: true, }} >
+        <Box>
+          <List>
+            {pages.map((topic, index) => (
+              <Box key={topic.topic}>
+                <ListItem >
+                    <ListItemText className={classes.topicItem} primary={topic.topic} />
+                </ListItem>
+                {topic.pages.map((page, index) => (
+                    <ListItem key={page.index}>
+                        <ListItemButton onClick={() => setSelectedPage(page.index)}>
+                            <ListItemText primary={page.name} />
+                        </ListItemButton> 
+                    </ListItem>
+                ))}
+            </Box>
+            ))}
+          </List>
+        </Box>
+      </Drawer>
+      <Drawer variant="permanent" className={classes.menuBar} open>
+        <Box>
+          <List>
+            {pages.map((topic, index) => (
+              <Box key={topic.topic}>
+                <ListItem>
+                <ListItemText className={classes.topicItem} primary={topic.topic} />
+                </ListItem>
+                {topic.pages.map((page, index) => (
+                    <ListItem key={page.index}>
+                        <ListItemButton onClick={() => setSelectedPage(page.index)}>
+                            <ListItemText primary={page.name} />
+                        </ListItemButton> 
+                    </ListItem>
+                ))}
+            </Box>
+            ))}
+          </List>
+        </Box>
+      </Drawer>
       <Container maxWidth={"lg"} className={classes.main}>
         {getCurrentPage()}
       </Container>
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 }

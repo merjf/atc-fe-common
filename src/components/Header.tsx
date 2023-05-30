@@ -2,20 +2,25 @@ import { makeStyles } from "@mui/styles";
 import { AppBar, Toolbar, Typography,  } from "@mui/material";
 
 const useStyles = makeStyles({
-    bar: {
-        
-    }
+    navBar: {
+        maxHeight: 70,
+        alignItems: "flex-end",
+        paddingRight: 20,
+        backgroundColor: "white !important",
+        color: "black !important",
+        fontSize: "2rem",
+        fontFamily: "Arial, Helvetica, sans-serif",
+        boxShadow: "none !important"
+    },
 });
 
 const Header = () => {
     const classes = useStyles();
 
     return (
-        <AppBar component="nav" sx={{backgroundColor: "#f1f1f1", color: "black"}}>
+        <AppBar position="fixed" className={classes.navBar}>
             <Toolbar>
-                <Typography variant="h6" component="div">
-                    Math, Statistical, AI & ML services
-                </Typography>
+                Academic Tools Collector
             </Toolbar>
         </AppBar>
     )
