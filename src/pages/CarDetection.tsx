@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { makeStyles } from "@mui/styles";
-import { Box, Button, Container, Divider, List, ListItem } from "@mui/material";
-import { fetchCarModelTesting, fetchCarDatasetInfo } from '../services/APIService'
-import { Response, Image } from '../models/responses'
+import { Box, Button, CircularProgress, Container, Divider, List, ListItem, ListItemText } from "@mui/material";
+import { fetchObjectModelTesting, fetchObjectDatasetInfo } from '../services/APIService'
+import { Response, Image } from '../models/types'
 import CleaningServicesIcon from '@mui/icons-material/CleaningServices';
 import UploadIcon from '@mui/icons-material/Upload';
 import ImageIcon from '@mui/icons-material/Image';
+import { CSSProperties } from "@emotion/serialize";
 
 const useStyles = makeStyles({
     main: {
@@ -25,7 +26,9 @@ const useStyles = makeStyles({
     },
     resultBox: {
       display: "flex",
-      gap: 40
+      gap: 40,
+      width: "100%",
+      justifyContent: "space-between"
     },
     previewImageBox: {
       display: "flex",
@@ -36,14 +39,15 @@ const useStyles = makeStyles({
         margin: 0
       },
       "& > img":{
-        maxWidth: 400,
+        minWidth: 500,
+        maxWidth: 700,
       }
     },
     dataResultBox: {
+      minWidth: 250,
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
-      gap: 5
     }
 });
 
@@ -52,6 +56,7 @@ const CarDetection = () => {
 
     const [result, setResult] = useState<Response>();
     const [image, setImage] = useState<Image>();
+    const [responseLoading, setResponseLoading] = useState(false);
   
     const getImage = (event : any) => {
       var file = event.target.files[0];
@@ -66,9 +71,11 @@ const CarDetection = () => {
 
     const getCarDatasetInfo = () => {
       if(image){
-        fetchCarModelTesting(image)
+        setResponseLoading(true);
+        fetchObjectModelTesting(image)
           .then((res) => {
             setResult(res);
+            setResponseLoading(false);
           })
       }
     }
@@ -80,48 +87,55 @@ const CarDetection = () => {
 
     return (
         <Container className={classes.main} maxWidth={"md"}>
-            <h2>Car Detection</h2>
+            <h2>Object Detection</h2>
             <Box className={classes.formBox}>
               {!image &&
-                  <Button variant="contained" startIcon={<UploadIcon />} component="label"> 
+                <Button variant="contained" startIcon={<UploadIcon />} component="label"> 
                   Chose Picture
                   <input type="file" hidden onChange={getImage}/>
-                  </Button>
+                </Button>
               }
               {image &&
-                  <Button variant="contained" startIcon={<ImageIcon />} component="label" onClick={getCarDatasetInfo}> 
-                  Upload
-                  </Button>
+                <Button variant="contained" startIcon={<ImageIcon />} component="label" onClick={getCarDatasetInfo}> 
+                  Test
+                </Button>
               }
               <Button variant="outlined" startIcon={<CleaningServicesIcon />} onClick={cleanData}>
-                  Clear Data
+                Clear Data
               </Button>
             </Box>
             <Divider className={classes.divider}/>
-            <Box className={classes.resultBox} sx={{flexDirection: { xs: "column", sm: "row"}}}>
-              {image &&
-                  <Box className={classes.previewImageBox}>
-                    <h3>Preview image:</h3>
-                    <img src={image.src} />
-                  </Box>
-              }
-              {result &&
-                  <Box className={classes.dataResultBox}>
-                    <h3>Data Result:</h3>
-                    {result?.predictions.map((prediction, index) => (
+            {image &&
+              <Box className={classes.resultBox}>
+                <Box className={classes.previewImageBox}>
+                  <h1>Preview image:</h1>
+                  <img src={image.src} />
+                </Box>
+                <Box className={classes.dataResultBox}>
+                  {responseLoading && 
+                    <CircularProgress />
+                  }
+                  {result &&
+                    <Box>
+                      <h1>Predictions:</h1>
                       <List>
-                        <ListItem>
-                          <p>
-                            <b>{index}</b>
-                            <b>Class: </b> {prediction.model}
-                            <b>Accuracy: </b> {prediction.accuracy}
-                          </p>
-                        </ListItem>
+                        {result?.predictions.map((prediction, index) => (
+                          <ListItem key={prediction.accuracy}>
+                            <ListItemText>
+                              <pre>
+                              <b>Result:</b> {index+1}<br/>
+                              <b>Class: </b> {prediction.model}<br/>
+                              <b>Accuracy: </b> {prediction.accuracy}
+                              </pre>
+                            </ListItemText>
+                          </ListItem>
+                        ))}
                       </List>
-                    ))}
+                    </Box>
+                  }
                   </Box>
-              }
-            </Box>
+              </Box>
+            }
         </Container>
     )
 }
