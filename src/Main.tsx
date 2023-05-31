@@ -1,7 +1,7 @@
 import { makeStyles } from "@mui/styles";
 import { Container } from "@mui/material";
 import Header from './components/Header'
-import CarDetection from './pages/CarDetection'
+import ObjectDetection from './pages/ObjectDetection'
 import MusicRecommandation from './pages/MusicRecommandation'
 import AppRecommandation from './pages/AppRecommandation'
 import { theme } from './utils/Utils';
@@ -32,7 +32,7 @@ function App() {
     const x = 0;
     switch(x){
       case 0:
-        return <CarDetection />;
+        return <ObjectDetection />;
       // case 1:
       //   return <MusicRecommandation />;
       // case 2:
