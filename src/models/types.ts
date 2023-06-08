@@ -1,22 +1,55 @@
+import React, { ReactNode } from "react";
 
-export type Response = {
-    message: string;
+interface Response {
+    message: String;
+}
+
+export interface LoadDatasetResponse extends Response {
+    dataset: DatasetResponse
+}
+
+export interface TestModelResponse extends Response {
     predictions: Prediction[];
 };
 
-export type Prediction = {
-    accuracy: number;
-    model: string;
+export interface Prediction {
+    accuracy: number
+    model: string
 }
   
-export type Image = {
-    src: string,
-    value: any,
-    name: string,
-    type: string,
+export interface Image {
+    src: string
+    value: any
+    name: string
+    type: string
     size: string
 }
 
-export type currentState = {
+export interface Dataset {
+    name: string
+    id: string
+    image: string
+    nClasses: number
+}
+
+export interface DatasetResponse {
+    name: string
+    id: string
+    image: string
+    classes: string[]
+}
+
+export interface currentState {
     currentPage: number,
+}
+
+export interface Page {
+    topic: string,
+    icon: any,
+    pages: SubPage[]
+}
+
+export interface SubPage{
+    name: string,
+    index: number
 }

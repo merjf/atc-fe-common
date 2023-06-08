@@ -12,7 +12,8 @@ const useStyles = makeStyles({
         height: "50px",
         borderTop: "1px solid grey",
         padding: "0px 5px",
-        backgroundColor: "white"
+        backgroundColor: "white",
+        border: "none !important"
     },
     signature: {
         paddingRight: "5px",
@@ -25,7 +26,7 @@ const Footer = () => {
     return (
         <footer className={classes.footer}>
             <Box className={classes.signature}>
-                <span>© 2023 - Francesco Mergiotti</span>
+                <h3>Academic Tools Collector</h3>
             </Box>
         </footer>
     )
