@@ -7,6 +7,8 @@ import BasicCard from '../components/ObjectDetection/BasicCard'
 import UploadIcon from '@mui/icons-material/Upload';
 import ImageIcon from '@mui/icons-material/Image';
 import CleaningServicesIcon from '@mui/icons-material/CleaningServices';
+import PsychologyIcon from '@mui/icons-material/Psychology';
+import Title from "../components/Title";
 
 const useStyles = makeStyles({
   main: {
@@ -20,11 +22,6 @@ const useStyles = makeStyles({
     alignItems: "center",
     flexDirection: "column",
     gap: 10
-  },
-  divider: {
-    borderWidth: "3px !important",
-    width: "50%",
-    borderRadius: "50px !important",
   },
   resultBox: {
     display: "flex",
@@ -105,9 +102,8 @@ const ObjectDetection = () => {
 
   return (
     <Container className={classes.main} maxWidth={"xl"}>
-      <h1>Object Detection Service</h1>
+      <Title title={"Object Detection Service"} icon={<PsychologyIcon sx={{fontSize: 42}} htmlColor="#36aacf"/>} />
       <BasicCard title={"Select dataset"} description={""} datasetSelected={datasetIsPresent}/>
-      <Divider className={classes.divider}/>
       {datasetSelected && 
         <Box className={classes.formBox}>
           <h4>To test the model, upload a picture related to the active dataset</h4>

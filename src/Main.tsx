@@ -2,10 +2,11 @@ import { makeStyles } from "@mui/styles";
 import { Container } from "@mui/material";
 import Header from './components/Header'
 import ObjectDetection from './pages/ObjectDetection'
-import MusicRecommandation from './pages/MusicRecommandation'
+import MovieReport from './pages/MovieReport'
 import AppRecommandation from './pages/AppRecommandation'
 import { theme } from './utils/Utils';
 import MonteCarloEstimation from "./pages/MonteCarloEstimation";
+import Dashboard from "./pages/Dashboard"
 import Footer from "./components/Footer";
 import { CurrentPage } from './utils/context';
 import { useState } from "react";
@@ -40,10 +41,12 @@ function App() {
       case 0:
         return <ObjectDetection />;
       case 1:
-        return <MusicRecommandation />;
+        return <MovieReport />;
       case 2:
         return <AppRecommandation />;
       case 3:
+        return <Dashboard />;
+      case 4:
         return <MonteCarloEstimation />;
     }
   }

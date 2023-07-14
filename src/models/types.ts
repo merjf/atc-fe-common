@@ -43,13 +43,15 @@ export interface currentState {
     currentPage: number,
 }
 
-export interface Page {
+export interface Field {
     topic: string,
     icon: any,
-    pages: SubPage[]
+    pages: Page[],
 }
 
-export interface SubPage{
+export interface Page{
     name: string,
-    index: number
+    index: number,
+    view: any,
+    active: boolean,
 }

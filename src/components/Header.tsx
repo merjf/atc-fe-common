@@ -4,7 +4,7 @@ import { useState } from 'react';
 import MenuIcon from '@mui/icons-material/Menu';
 import classnames from "classnames";
 import { pages } from '../models/constants'
-import { Page, SubPage } from "../models/types";
+import { Field, Page } from "../models/types";
 
 const useStyles = makeStyles({
   navBar: {
@@ -67,15 +67,15 @@ const Header = (props: HeaderProps) => {
       <Drawer variant="temporary" open={menuOpen} className={classes.menuBar} onClose={handleDrawerDesktopToggle} ModalProps={{ keepMounted: true, }}>
         <Box>
           <List>
-            {pages.map((topic:Page, index:number) => (
-              <Box key={topic.topic}>
+            {pages.map((field:Field, index:number) => (
+              <Box key={field.topic}>
                 <ListItem>
                   <ListItemIcon className={classes.topicIcon}>
-                    {topic.icon}
+                    {field.icon}
                   </ListItemIcon>
-                  <ListItemText className={classes.topicItem} primary={topic.topic} />
+                  <ListItemText className={classes.topicItem} primary={field.topic} />
                 </ListItem>
-                {topic.pages.map((page:SubPage, index:number) => (
+                {field.pages.filter((page:Page) => page.active).map((page:Page, index:number) => (
                   <ListItem key={page.index}>
                     <ListItemButton onClick={() => handleClick(page.index)}>
                       <ListItemText primary={page.name} />

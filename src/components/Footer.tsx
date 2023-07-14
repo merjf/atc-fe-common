@@ -3,17 +3,15 @@ import { AppBar, Box, Toolbar, Typography,  } from "@mui/material";
 
 const useStyles = makeStyles({
     footer: {
-        width: "98%",
+        width: "100%",
         display: "flex",
         position: "fixed",
         bottom: 0,
         alignItems: "center",
         justifyContent: "flex-end",
         height: "50px",
-        borderTop: "1px solid grey",
-        padding: "0px 5px",
+        borderTop: "1px solid #d5d5d5",
         backgroundColor: "white",
-        border: "none !important"
     },
     signature: {
         paddingRight: "5px",
