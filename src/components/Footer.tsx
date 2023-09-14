@@ -15,6 +15,9 @@ const useStyles = makeStyles({
     },
     signature: {
         paddingRight: "5px",
+        "& > h3": {
+            fontWeight: 500
+        }
     },
 })
 

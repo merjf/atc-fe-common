@@ -8,11 +8,13 @@ const useStyles = makeStyles({
         alignItems: "center",
         flexDirection: "column",
         gap: 20,
+        height: 200,
     },
     titleBox: {
         display: "flex",
         alignItems: "center",
         gap: 15,
+        height: "100%"
     },
     divider: {
         borderWidth: "3px !important",
@@ -33,13 +35,13 @@ const Title = (props: TitleProps) => {
     const classes = useStyles();
 
     return (
-            <Box className={classes.box}>
-                <Box className={classes.titleBox}>
-                    {props.icon}
-                    <h1>{props.title}</h1>
-                </Box>
-                <Divider className={classes.divider}/>
+        <Box className={classes.box}>
+            <Box className={classes.titleBox}>
+                {props.icon}
+                <h1>{props.title}</h1>
             </Box>
+            <Divider className={classes.divider}/>
+        </Box>
     )
 }
 

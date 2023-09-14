@@ -22,7 +22,7 @@ const useStyles = makeStyles({
     '& .MuiDrawer-paper': {
       paddingTop: 80,
       boxSizing: 'border-box',
-      width: 260,
+      width: 340,
     }
   },
   topicItem: {

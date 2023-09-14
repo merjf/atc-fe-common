@@ -1,4 +1,5 @@
-import { Image } from "../models/types";
+import { nPlayers } from "../models/constants";
+import { GameCards, Image } from "../models/types";
 
 const GATEWAY_URL = "http://127.0.0.1:5001"
 const OBJECT_DETECTION_SERVICE_PREFIX = "/atc-be-object-detection"
@@ -7,12 +8,22 @@ const MONTECARO_SERVICE_PREFIX = "/atc-be-montecarlo"
 const OBJECT_DETECTION_LOAD_DATASET = GATEWAY_URL + OBJECT_DETECTION_SERVICE_PREFIX + "/load-dataset"
 const OBJECT_DETECTION_TEST_MODEL = GATEWAY_URL + OBJECT_DETECTION_SERVICE_PREFIX + "/test-object-model"
 
-const MONTECARLO_GET_DECK = GATEWAY_URL + MONTECARO_SERVICE_PREFIX + "/get-deck"
+const MONTECARLO_DRAW_CARDS = GATEWAY_URL + MONTECARO_SERVICE_PREFIX + "/draw-cards"
+const MONTECARLO_EVALUATION_REQUEST = GATEWAY_URL + MONTECARO_SERVICE_PREFIX + "/montecarlo-evaluation"
+const MONTECARLO_SHUFFLE_DECK = GATEWAY_URL + MONTECARO_SERVICE_PREFIX + "/shuffle-deck"
 
 const requestFileOptions = (body: any) => ({
-    method: 'POST',
-    body: body
+  method: 'POST',
+  body: body
 });
+
+const requestPOSTWithBody = (body: any) => ({
+  method: 'POST',
+  headers: {
+    'Content-type': 'application/json; charset=UTF-8'
+  },
+  body: JSON.stringify(body)
+})
 
 // Object Detection Service APIs
 
@@ -28,9 +39,20 @@ export const fetchObjectModelTesting = (image : Image) => {
     .then(response => response.json())
 }
 
-// Montecarlo Simulation Service APIs
+// Montecarlo Poker Simulation Service APIs
 
-export const fetchDeck = () => {
-  return fetch(MONTECARLO_GET_DECK)
+export const fetchDrawCards = (nPlayers:number, flop:boolean, turn:boolean, river:boolean) => {
+  return fetch(MONTECARLO_DRAW_CARDS+"?nPlayers="+nPlayers+"&flop="+flop+"&turn="+turn+"&river="+river)
+    .then(response => response.json())
+}
+
+export const fetchShuffleDeck = () => {
+  return fetch(MONTECARLO_SHUFFLE_DECK)
+    .then(response => response.json())
+}
+
+export const fetchMontecarloEvaluation = (gameCards : GameCards, nsamples: number) => {
+  const body = ({...gameCards, nsamples: nsamples})
+  return fetch(MONTECARLO_EVALUATION_REQUEST, requestPOSTWithBody(body))
     .then(response => response.json())
 }

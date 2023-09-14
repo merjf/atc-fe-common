@@ -5,7 +5,7 @@ import ObjectDetection from './pages/ObjectDetection'
 import MovieReport from './pages/MovieReport'
 import AppRecommandation from './pages/AppRecommandation'
 import { theme } from './utils/Utils';
-import MonteCarloEstimation from "./pages/MonteCarloEstimation";
+import MontecarloPokerSimulation from "./pages/MontecarloPokerSimulation";
 import Dashboard from "./pages/Dashboard"
 import Footer from "./components/Footer";
 import { CurrentPage } from './utils/context';
@@ -30,7 +30,7 @@ interface SubsetTab{
 function App() {
   const classes = useStyles(theme);
 
-  const [currentPage, setCurrentPage] = useState(0);
+  const [currentPage, setCurrentPage] = useState(4);
 
   const handleClick = (pageIndex: number) => {
     setCurrentPage(pageIndex);
@@ -47,7 +47,7 @@ function App() {
       case 3:
         return <Dashboard />;
       case 4:
-        return <MonteCarloEstimation />;
+        return <MontecarloPokerSimulation />;
     }
   }
   

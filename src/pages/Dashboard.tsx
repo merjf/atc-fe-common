@@ -1,6 +1,6 @@
 import { makeStyles } from "@mui/styles";
 import { Container} from "@mui/material";
-import AssessmentIcon from '@mui/icons-material/Assessment';
+import PaidIcon from '@mui/icons-material/Paid';
 import Title from '../components/Title'
 
 const useStyles = makeStyles({
@@ -17,7 +17,7 @@ const Dashboard = () => {
 
   return (
     <Container className={classes.main} maxWidth={"xl"}>
-      <Title title={"Dashboard - Income/Outcome"} icon={<AssessmentIcon sx={{fontSize: 42}} htmlColor="orange"/>} />
+      <Title title={"Dashboard - Income/Outcome"} icon={<PaidIcon sx={{fontSize: 42}} htmlColor="green"/>} />
     </Container>
   )
 }

@@ -12,6 +12,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 const useStyles = makeStyles({
     cardBox:{
         position: "absolute",
+        zIndex: 1000,
         top: 30,
         right: 30,
     },

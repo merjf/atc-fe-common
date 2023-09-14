@@ -8,6 +8,7 @@ import UploadIcon from '@mui/icons-material/Upload';
 import ImageIcon from '@mui/icons-material/Image';
 import CleaningServicesIcon from '@mui/icons-material/CleaningServices';
 import PsychologyIcon from '@mui/icons-material/Psychology';
+import ImageSearchIcon from '@mui/icons-material/ImageSearch';
 import Title from "../components/Title";
 
 const useStyles = makeStyles({
@@ -102,7 +103,7 @@ const ObjectDetection = () => {
 
   return (
     <Container className={classes.main} maxWidth={"xl"}>
-      <Title title={"Object Detection Service"} icon={<PsychologyIcon sx={{fontSize: 42}} htmlColor="#36aacf"/>} />
+      <Title title={"Object Detection Service"} icon={<ImageSearchIcon sx={{fontSize: 42}} htmlColor="#36aacf"/>} />
       <BasicCard title={"Select dataset"} description={""} datasetSelected={datasetIsPresent}/>
       {datasetSelected && 
         <Box className={classes.formBox}>

@@ -55,3 +55,46 @@ export interface Page{
     view: any,
     active: boolean,
 }
+
+export interface Suit {
+    value: number;
+    label: string
+}
+
+export interface Ranking {
+    value: number;
+    label: string
+}
+
+export interface MontecarloPokerSimulationSettings {
+    nPlayers: number;
+    nSamples: number;
+    flop: boolean;
+    turn: boolean;
+    river: boolean;
+}
+
+interface Card{
+    suit?: Suit;
+    ranking?: Ranking;
+}
+
+interface TableCards {
+    cards: Card[]
+}
+
+interface PlayerCards {
+    cards: Card[]
+}
+
+export interface GameCards {
+    tableCards: TableCards,
+    mainPlayerCards: PlayerCards,
+    otherPlayerCards: PlayerCards[]
+}
+
+export interface RankingHand {
+    rankingMainPlayer: number;
+    score: string;
+    mainPlayerCards: Card[];
+}
