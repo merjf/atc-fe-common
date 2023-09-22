@@ -1,5 +1,5 @@
 import { nPlayers } from "../models/constants";
-import { GameCards, Image } from "../models/types";
+import { EvaluationHand, GameCards, Image } from "../models/types";
 
 const GATEWAY_URL = "http://127.0.0.1:5001"
 const OBJECT_DETECTION_SERVICE_PREFIX = "/atc-be-object-detection"
@@ -9,7 +9,8 @@ const OBJECT_DETECTION_LOAD_DATASET = GATEWAY_URL + OBJECT_DETECTION_SERVICE_PRE
 const OBJECT_DETECTION_TEST_MODEL = GATEWAY_URL + OBJECT_DETECTION_SERVICE_PREFIX + "/test-object-model"
 
 const MONTECARLO_DRAW_CARDS = GATEWAY_URL + MONTECARO_SERVICE_PREFIX + "/draw-cards"
-const MONTECARLO_EVALUATION_REQUEST = GATEWAY_URL + MONTECARO_SERVICE_PREFIX + "/montecarlo-evaluation"
+const MONTECARLO_EVALUATE_HAND = GATEWAY_URL + MONTECARO_SERVICE_PREFIX + "/evalutate-hand"
+const MONTECARLO_GET_LAST_FIVE_HANDS = GATEWAY_URL + MONTECARO_SERVICE_PREFIX + "/get-last-hands"
 const MONTECARLO_SHUFFLE_DECK = GATEWAY_URL + MONTECARO_SERVICE_PREFIX + "/shuffle-deck"
 
 const requestFileOptions = (body: any) => ({
@@ -53,6 +54,11 @@ export const fetchShuffleDeck = () => {
 
 export const fetchMontecarloEvaluation = (gameCards : GameCards, nsamples: number) => {
   const body = ({...gameCards, nsamples: nsamples})
-  return fetch(MONTECARLO_EVALUATION_REQUEST, requestPOSTWithBody(body))
+  return fetch(MONTECARLO_EVALUATE_HAND, requestPOSTWithBody(body))
+    .then(response => response.json())
+}
+
+export const fetchMontecarloLast5Hands = () => {
+  return fetch(MONTECARLO_GET_LAST_FIVE_HANDS)
     .then(response => response.json())
 }

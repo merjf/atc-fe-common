@@ -1,14 +1,13 @@
 import { makeStyles } from "@mui/styles";
-import { Box, Button, CircularProgress, Container, Paper, Snackbar, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography} from "@mui/material";
+import { Box, Button, CircularProgress, Container, Divider, Paper, Snackbar, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography} from "@mui/material";
 import Title from "../components/Title";
 import BasicCard from "../components/MontecarloPokerSimulation/BasicCard";
 import { useEffect, useState } from "react";
-import { GameCards, MontecarloPokerSimulationSettings, RankingHand } from "../models/types";
-import { fetchDrawCards, fetchMontecarloEvaluation, fetchShuffleDeck } from "../services/APIService";
+import { EvaluationHand, GameCards, HandHistory, MontecarloPokerSimulationSettings } from "../models/types";
+import { fetchDrawCards, fetchMontecarloEvaluation, fetchMontecarloLast5Hands, fetchShuffleDeck } from "../services/APIService";
 import Alert from "../components/Alert";
 import classnames from "classnames";
 import PokerTable from "../components/MontecarloPokerSimulation/PokerTable";
-import { gameCardsRequest } from "../models/constants";
 import PlayingCard from "../components/MontecarloPokerSimulation/PlayingCard";
 
 
@@ -24,6 +23,11 @@ const useStyles = makeStyles({
     width: "70%",
     alignItems: "center",
     justifyContent: "space-evenly"
+  },
+  divider: {
+    borderWidth: "3px !important",
+    width: "63%",
+    borderRadius: "50px !important",
   },
   boxButton:{
     display: "flex",
@@ -47,7 +51,9 @@ const useStyles = makeStyles({
   containerTable:{
     display: "flex !important",
     flexDirection: "column",
+    alignItems: "center",
     gap: 50,
+    marginBottom: 50,
   },
   table: {
     width: "max-content !important",
@@ -68,6 +74,13 @@ const useStyles = makeStyles({
     "&.green":{
       color: "green"
     }
+  },
+  spinner: {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    zIndex: 1001,
+
   }
 });
 
@@ -76,7 +89,8 @@ const MontecarloPokerSimulation = () => {
 
   const [settings, setSettings] = useState<MontecarloPokerSimulationSettings>({nPlayers: 1, nSamples: 10000, flop: true, turn: true, river: true});
   const [gameCards, setGameCards] = useState<GameCards | undefined>();
-  const [rankingHands, setRankingHands] = useState<RankingHand[]>([]);
+  const [lastHands, setLastHands] = useState<HandHistory[]>([]);
+  const [evaluation, setEvaluation] = useState<EvaluationHand | undefined>(undefined);
   const [responseLoading, setResponseLoading] = useState(false);
   const [openAlert, setOpenAlert] = useState(false);
 
@@ -97,11 +111,13 @@ const MontecarloPokerSimulation = () => {
 
   const getDrawCards = () => {
     setResponseLoading(true);
-    fetchDrawCards(settings.nPlayers, settings.flop, settings.turn, settings.river)
-      .then((res) => {
-        setGameCards(res.body);
-        setResponseLoading(false);
-      })
+    setTimeout(() => {
+      fetchDrawCards(settings.nPlayers, settings.flop, settings.turn, settings.river)
+        .then((res) => {
+          setGameCards(res.body);
+          setResponseLoading(false);
+        })
+    }, 2500)
   }
 
   const shuffleDeck = () => {
@@ -109,19 +125,29 @@ const MontecarloPokerSimulation = () => {
       .then((res) => {
         setOpenAlert(true);
         setGameCards(undefined);
-        setRankingHands([]);
+        setEvaluation(undefined);
+        setLastHands([]);
       })
   }
 
-  const getEvaluation = () => {
+  const evaluateHand = () => {
     if(gameCards){
       setResponseLoading(true);
-      fetchMontecarloEvaluation(gameCards, 50)
+      fetchMontecarloEvaluation(gameCards, settings.nSamples)
         .then((res) => {
-          setRankingHands(res.body);
+          setEvaluation(res.body)
           setResponseLoading(false);
         })
     }
+  }
+
+  const getLast5Hands = () => {
+    setResponseLoading(true);
+    fetchMontecarloLast5Hands()
+      .then((res) => {
+        setLastHands(res.body);
+        setResponseLoading(false);
+      })
   }
 
   return (
@@ -145,7 +171,7 @@ const MontecarloPokerSimulation = () => {
           <Button onClick={() => getDrawCards()} variant="contained" component="label">
             Draw Cards
           </Button>
-          <Button disabled={gameCards === undefined || gameCards === null} onClick={() => getEvaluation()} variant="contained" component="label">
+          <Button disabled={gameCards === undefined || gameCards === null} onClick={() => evaluateHand()} variant="contained" component="label">
             Evaluate Hand
           </Button>
           <Button onClick={() => shuffleDeck()} variant="outlined" component="label">
@@ -158,47 +184,56 @@ const MontecarloPokerSimulation = () => {
           </Snackbar>
         </Box>
         <Box className={classes.boxButton}>
-          {gameCards && 
+          {evaluation && 
             <Box>
               <Typography sx={{ fontSize: 21, margin: 0 }} color="text.secondary" gutterBottom>
                 Result:
               </Typography>
               <Typography sx={{ fontSize: 18, margin: 0 }} color="text.secondary" gutterBottom>
-                <span className={classnames(classes.resultText, "green")}>Win: <b>{}%</b></span><br/>
-                <span className={classnames(classes.resultText, "grey")}>Spare: <b>{}%</b></span><br/>
-                <span className={classnames(classes.resultText, "red")}>Lose: <b>{}%</b></span>
+                <span className={classnames(classes.resultText, "green")}>Win: <b>{evaluation.win}%</b></span><br/>
+                <span className={classnames(classes.resultText, "grey")}>Spare: <b>{evaluation.spare}%</b></span><br/>
+                <span className={classnames(classes.resultText, "red")}>Lose: <b>{evaluation.lose}%</b></span>
               </Typography>
             </Box>
           }
         </Box>
       </Box>
       {responseLoading && 
-        <CircularProgress />
+        <CircularProgress className={classes.spinner}/>
       }
       <Container className={classes.containerTable}>
-        {gameCards && 
-          <PokerTable gameCards={gameCards} />
-        }
-        {rankingHands.length > 0 && 
+        <PokerTable gameCards={gameCards} />
+      </Container>
+      <Divider className={classes.divider}/>
+      <Container className={classes.containerTable}>
+        <Button onClick={() => getLast5Hands()} variant="contained" component="label" style={{width: "fit-content"}}>
+          Show All Hands
+        </Button>
+        {lastHands.length > 0 && 
           <TableContainer component={Paper} className={classes.table}>
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
               <TableHead>
                 <TableRow>
-                  <TableCell>Hand</TableCell>
+                  <TableCell>ID Hand</TableCell>
+                  <TableCell align="right">Win</TableCell>
+                  <TableCell align="right">Spare</TableCell>
                   <TableCell align="right">Score</TableCell>
-                  <TableCell align="right">Ranking</TableCell>
+                  <TableCell align="right">N° Samples</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {rankingHands.map((row, index) => (
+                {lastHands.map((row, index) => (
                   <TableRow key={index} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                    <TableCell component="th" scope="row" className={classes.rowCards}>
-                      {row.mainPlayerCards.map((card, index) => (
+                    <TableCell component="th" scope="row" className={classes.rowCards}>{row.id}</TableCell>
+                    <TableCell className={classnames(classes.resultText, "green")} align="right">{row.win}</TableCell>
+                    <TableCell className={classnames(classes.resultText, "gray")} align="right">{row.spare}</TableCell>
+                    <TableCell className={classnames(classes.resultText, "red")} align="right">{row.lose}</TableCell>
+                    <TableCell component="th" scope="row" className={classes.rowCards}>{row.samples}</TableCell>
+                    {/* <TableCell component="th" scope="row" className={classes.rowCards}>
+                      {row..map((card, index) => (
                         <PlayingCard suit={card.suit} ranking={card.ranking} key={index}/>
                       ))}
-                    </TableCell>
-                    <TableCell align="right">{row.score}</TableCell>
-                    <TableCell align="right">{row.rankingMainPlayer}</TableCell>
+                    </TableCell> */}
                   </TableRow>
                 ))}
               </TableBody>

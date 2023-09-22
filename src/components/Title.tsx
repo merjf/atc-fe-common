@@ -18,7 +18,7 @@ const useStyles = makeStyles({
     },
     divider: {
         borderWidth: "3px !important",
-        width: "50%",
+        width: "100%",
         borderRadius: "50px !important",
     },
     icon:{

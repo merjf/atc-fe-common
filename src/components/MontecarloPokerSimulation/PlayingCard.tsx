@@ -84,6 +84,11 @@ const PlayingCard = (props: PlayingCardProps) => {
             <Box className={classes.cardInfo} onClick={openChangeCardDialog}>
                 {showCard()}
             </Box>
+            {/* <CardSelectionDialog
+                selectedValue={selectedValue}
+                open={open}
+                onClose={handleClose}
+            /> */}
         </Box>
     );
 }

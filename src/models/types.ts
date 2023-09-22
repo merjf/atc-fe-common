@@ -79,22 +79,38 @@ interface Card{
     ranking?: Ranking;
 }
 
-interface TableCards {
-    cards: Card[]
-}
-
 interface PlayerCards {
     cards: Card[]
 }
 
 export interface GameCards {
-    tableCards: TableCards,
+    tableCards: Card[],
     mainPlayerCards: PlayerCards,
     otherPlayerCards: PlayerCards[]
 }
 
 export interface RankingHand {
-    rankingMainPlayer: number;
+    ranking: number;
     score: string;
-    mainPlayerCards: Card[];
+    cards: Card[];
+}
+
+export interface EvaluationHand {
+    win: number;
+    lose: number;
+    spare: number;
+    nSamples: number;
+    id: String;
+}
+
+export interface HandHistory {
+    id: String;
+    mainPlayerHands: RankingHand[];
+    otherPlayerCards: PlayerCards[];
+    initialTableCards: PlayerCards[];
+    fullTableCards: PlayerCards[];
+    win: number;
+    lose: number;
+    spare: number;
+    samples: number;
 }

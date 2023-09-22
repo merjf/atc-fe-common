@@ -34,7 +34,7 @@ const useStyles = makeStyles({
 });
 
 interface PokerTableProps {
-    gameCards: GameCards
+    gameCards: GameCards | undefined
 }
 
 const locations = [{
@@ -43,14 +43,17 @@ const locations = [{
 
 const PokerTable = (props: PokerTableProps) => {
     const classes = useStyles();
-    const mainPlayerCards = props.gameCards.mainPlayerCards;
-    const otherPlayerCards = props.gameCards.otherPlayerCards;
+    const mainPlayerCards = props.gameCards ? props.gameCards.mainPlayerCards : undefined;
+    const otherPlayerCards = props.gameCards ? props.gameCards.otherPlayerCards : undefined;
     const fillCardsTable = () => {
-        let tableCards = props.gameCards.tableCards;
-        Array.from(Array(5-props.gameCards.tableCards.cards.length)).map(i => {
-            tableCards.cards.push({})
-        });   
-        return tableCards;
+        if(props.gameCards){
+            let tableCards = props.gameCards.tableCards;
+            Array.from(Array(5-props.gameCards.tableCards.length)).map(i => {
+                tableCards.push({})
+            });
+            return tableCards
+        }
+        return undefined;
     }
     const tableCards = fillCardsTable();
 
@@ -107,18 +110,20 @@ const PokerTable = (props: PokerTableProps) => {
 
     return(
         <Box className={classes.boxTable} sx={{backgroundImage: `url(${require("../../assets/images/poker-table.jpeg")})`}}>
-            <Box className={classnames(classes.cards, classes.mainPlayerCards)} style={assignOtherPlayerCardsPosition(true, 0)}>
-                <PlayingCard suit={mainPlayerCards.cards[0].suit} ranking={mainPlayerCards.cards[0].ranking} />
-                <PlayingCard suit={mainPlayerCards.cards[1].suit} ranking={mainPlayerCards.cards[1].ranking} />
-            </Box>
-            {otherPlayerCards.map((otherPlayer, index) => (
+            {mainPlayerCards && 
+                <Box className={classnames(classes.cards, classes.mainPlayerCards)} style={assignOtherPlayerCardsPosition(true, 0)}>
+                    <PlayingCard suit={mainPlayerCards.cards[0].suit} ranking={mainPlayerCards.cards[0].ranking} />
+                    <PlayingCard suit={mainPlayerCards.cards[1].suit} ranking={mainPlayerCards.cards[1].ranking} />
+                </Box>
+            }
+            {otherPlayerCards && otherPlayerCards.map((otherPlayer, index) => (
                 <Box className={classes.cards} style={assignOtherPlayerCardsPosition(false, index+1)} key={index}>
                     <PlayingCard suit={otherPlayer.cards[0].suit} ranking={otherPlayer.cards[0].ranking} />
                     <PlayingCard suit={otherPlayer.cards[1].suit} ranking={otherPlayer.cards[1].ranking} />
                 </Box>
             ))}
             <Box className={classes.tableCards}>
-                {tableCards.cards.map((card, index) => (
+                {tableCards && tableCards.map((card, index) => (
                     <PlayingCard
                         key={index}
                         skinCard={!card.ranking ? true : false}

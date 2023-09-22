@@ -163,62 +163,59 @@ export const AllRankings : Ranking[] = [{
 }]
 
 export const gameCardsRequest: GameCards = {
-  tableCards: {
-    cards: [
-        {
-            suit: {
+  tableCards: [
+    {
+        suit: {
+            value: 1,
+            label: "H"
+        },
+        ranking: {
+            value: 2,
+            label: "3"
+        }
+    },
+    {
+        suit: {
+            value: 1,
+            label: "S"
+        },
+        ranking: {
+            value: 2,
+            label: "3"
+        }
+    },
+    {
+        suit: {
+            value: 1,
+            label: "H"
+        },
+        ranking: {
+            value: 2,
+            label: "3"
+        }
+    },
+    {
+      suit: {
                 value: 1,
-                label: "H"
+                label: "C"
             },
             ranking: {
-                value: 2,
-                label: "3"
+                value: 3,
+                label: "4"
             }
-        },
-        {
-            suit: {
-                value: 1,
-                label: "S"
-            },
-            ranking: {
-                value: 2,
-                label: "3"
-            }
-        },
-        {
-            suit: {
-                value: 1,
-                label: "H"
-            },
-            ranking: {
-                value: 2,
-                label: "3"
-            }
-        },
-        {
-          suit: {
-                    value: 1,
-                    label: "C"
-                },
-                ranking: {
-                    value: 3,
-                    label: "4"
-                }
-    
-        },
-        {
-          suit: {
-              value: 1,
-              label: "H"
-          },
-          ranking: {
-              value: 3,
-              label: "4"
-          }
 
-  }
-    ],
-  },
+    },
+    {
+      suit: {
+          value: 1,
+          label: "H"
+      },
+      ranking: {
+          value: 3,
+          label: "4"
+      }
+    }
+  ],
   mainPlayerCards: {
     cards: [
         {
